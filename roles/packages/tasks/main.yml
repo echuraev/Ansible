@@ -14,5 +14,6 @@
     - cmake
     - python-pip
     - openssh-server
+    # google-chrome
   become: yes
   become_user: root
