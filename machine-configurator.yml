@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  # environment:
+  #   http_proxy:
+  #   https_proxy:
+  become_user: echuraev
+
+  roles:
+    - role: packages
+      become: yes
+      become_user: root
+

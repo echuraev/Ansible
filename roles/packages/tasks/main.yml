@@ -1,0 +1,18 @@
+---
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - awesome
+    - awesome-extra
+    - zsh
+    - git
+    - vim
+    - mc
+    - tmux
+    - cmake
+    - python-pip
+    - openssh-server
+  become: yes
+  become_user: root
