@@ -1,5 +1,13 @@
 ---
-- name: Install packages
+- name: Add Awesome repository
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+    - ppa:klaus-vormweg/awesome
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Install Awesome packages
   package:
     name: "{{ item }}"
     state: installed

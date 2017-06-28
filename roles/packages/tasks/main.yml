@@ -13,5 +13,6 @@
     - python-pip
     - openssh-server
     # google-chrome
+    # dropbox
   become: yes
   become_user: root
