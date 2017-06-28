@@ -4,14 +4,7 @@
     name: "{{ item }}"
     state: installed
   with_items:
-    - zsh
-    - git
-    - vim
-    - mc
-    - tmux
-    - cmake
-    - python-pip
-    - openssh-server
-    # google-chrome
+    - awesome
+    - awesome-extra
   become: yes
   become_user: root

@@ -9,4 +9,7 @@
     - role: packages
       become: yes
       become_user: root
+    - role: awesome
+      become: yes
+      become_user: root
 
