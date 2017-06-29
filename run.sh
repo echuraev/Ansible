@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ansible-playbook machine-configurator.yml -f 8
+ansible-playbook -i "localhost," -c local $@ machine-configurator.yml -f 8

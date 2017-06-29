@@ -1,4 +1,20 @@
 ---
+- name: Add packages keys
+  apt_key: url={{ item }} state=present
+  with_items:
+    - https://dl-ssl.google.com/linux/linux_signing_key.pub
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Add packages repositories
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+      - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
 - name: Install packages
   package:
     name: "{{ item }}"
@@ -12,7 +28,7 @@
     - cmake
     - python-pip
     - openssh-server
-    # google-chrome
+    - google-chrome-stable
     # dropbox
   become: yes
   become_user: root
