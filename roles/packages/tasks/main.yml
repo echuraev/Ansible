@@ -24,8 +24,10 @@
     - git
     - vim
     - mc
+    - htop
     - tmux
     - cmake
+    - rxvt-unicode
     - python-pip
     - openssh-server
     - google-chrome-stable
