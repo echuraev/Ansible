@@ -27,7 +27,7 @@
     - htop
     - tmux
     - cmake
-    - rxvt-unicode
+    - rxvt-unicode-256color
     - python-pip
     - openssh-server
     - google-chrome-stable
