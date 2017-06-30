@@ -7,6 +7,14 @@
   become: yes
   become_user: root
 
+- name: Add Awesome repository for Ubuntu 14.04
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+      - deb http://cz.archive.ubuntu.com/ubuntu zesty main universe
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '12.04'
+  become: yes
+  become_user: root
+
 - name: Install Awesome packages
   package:
     name: "{{ item }}"
