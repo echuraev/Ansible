@@ -1,0 +1,26 @@
+---
+- stat: path=~/.git
+  register: git_dir
+
+- name: Download my dotfiles
+  git:
+    repo: 'https://github.com/echuraev/Linux-env'
+    dest: /tmp/Linux-env
+  when: git_dir.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Install my dotfiles
+  shell: /tmp/Linux-env/install.sh
+  when: git_dir.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Remove tmp files
+  file:
+    state: absent
+    path: "/tmp/Linux-env/"
+  when: git_dir.stat.exists == False
+  become: yes
+  become_user: echuraev
+
