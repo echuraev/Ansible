@@ -22,5 +22,11 @@
   with_items:
     - awesome
     - awesome-extra
+    - xscreensaver
+    - xscreensaver-gl-extra
+    - xscreensaver-data-extra
+    - xscreensaver-screensaver-bsod
+    - xscreensaver-screensaver-webcollage
   become: yes
   become_user: root
+
