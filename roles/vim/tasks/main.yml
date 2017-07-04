@@ -1,0 +1,25 @@
+---
+- name: Add VIM repositories
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+      - ppa:jonathonf/vim
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Install VIM packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - vim
+    - task # dependence for taskwiki
+    - libx11-dev
+    - libxkbfile-dev
+  become: yes
+  become_user: root
+
+- name: Instal tasklib
+  pip: name=tasklib editable=false
+  become: yes
+  become_user: root
