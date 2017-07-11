@@ -1,0 +1,53 @@
+---
+- name: Check if rxvt-unicode is installed
+  command: which urxvt
+  ignore_errors: yes
+  register: urxvt_check
+
+- name: Download urxvt sources
+  git:
+    repo: 'https://github.com/exg/rxvt-unicode'
+    dest: /tmp/rxvt-unicode
+  when: urxvt_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Download libptytty sources
+  git:
+    repo: 'https://github.com/yusiwen/libptytty'
+    dest: /tmp/rxvt-unicode/libptytty
+  when: urxvt_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Download libev sources
+  git:
+    repo: 'https://github.com/yusiwen/libev'
+    dest: /tmp/rxvt-unicode/libev
+  when: urxvt_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Install urxvt dependency packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - libperl-dev
+
+- name: Configure urxvt
+  shell: cd /tmp/rxvt-unicode && ./configure --prefix=/usr --enable-everything
+  when: urxvt_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make urxvt
+  shell: cd /tmp/rxvt-unicode && make -j8
+  when: urxvt_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make install urxvt
+  shell: cd /tmp/rxvt-unicode && make -j8 install
+  when: urxvt_check.rc != 0
+

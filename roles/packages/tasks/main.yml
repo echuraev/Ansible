@@ -27,11 +27,12 @@
     - htop
     - tmux
     - cmake
-    - rxvt-unicode-256color
     - python-pip
     - openssh-server
     - google-chrome-stable
     - pavucontrol
+    - x11vnc
+    - tightvncserver
   become: yes
   become_user: root
 
