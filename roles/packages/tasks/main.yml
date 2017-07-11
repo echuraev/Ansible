@@ -26,6 +26,7 @@
     - mc
     - htop
     - tmux
+    - rxvt-unicode-256color
     - cmake
     - python-pip
     - openssh-server
