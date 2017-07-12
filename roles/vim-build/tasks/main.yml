@@ -1,0 +1,62 @@
+---
+# Use to remove 'dpkg -r vim'
+- name: Check if vim is installed
+  command: which vim
+  ignore_errors: yes
+  register: vim_check
+
+- name: Install VIM packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - liblua5.1-dev
+    - luajit
+    - libluajit-5.1-dev
+    - python-dev
+    - ruby-dev
+    - libperl-dev
+    - libncurses5-dev
+    - libatk1.0-dev
+    - libx11-dev
+    - libxpm-dev
+    - libxt-dev
+    - python-dev
+    - python2.7-dev
+    - python3-dev
+    - task # dependence for taskwiki
+    - libxkbfile-dev
+    - checkinstall
+  become: yes
+  become_user: root
+
+- name: Instal tasklib
+  pip: name=tasklib editable=false
+  become: yes
+  become_user: root
+
+- name: Download vim sources
+  git:
+    repo: 'https://github.com/vim/vim'
+    dest: /tmp/vim
+  when: vim_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+# Add to configure if you want to build your local version of vim --prefix=/home/echuraev/.bin/vim
+- name: Configure vim
+  shell: cd /tmp/vim && ./configure --with-features=huge --enable-multibyte --enable-rubyinterp=dynamic --with-ruby-command=$(which ruby) --enable-pythoninterp=dynamic --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu --enable-python3interp=dynamic --with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu --enable-perlinterp=dynamic --enable-luainterp --with-luajit --enable-cscope --with-x --enable-fontset --enable-largefile --with-compiledby="echuraev" --enable-fail-if-missing
+  when: vim_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make vim
+  shell: cd /tmp/vim && make -j8
+  when: vim_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make install vim
+  shell: cd /tmp/vim && make -j8 install
+  when: vim_check.rc != 0
+

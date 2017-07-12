@@ -1,9 +1,18 @@
 ---
-- name: Add VIM repositories
+- name: Add VIM repositories Ubuntu 14.04
   apt_repository: repo={{ item }} state=present update_cache=yes
   with_items:
       - ppa:jonathonf/vim
-  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
+  become: yes
+  become_user: root
+
+# For building vim look on this gist: https://gist.github.com/odiumediae/3b22d09b62e9acb7788baf6fdbb77cf8
+- name: Add VIM repositories Ubuntu 16.04
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+      - ppa:pi-rho/dev
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'
   become: yes
   become_user: root
 
@@ -12,6 +21,9 @@
     name: "{{ item }}"
     state: installed
   with_items:
+    - python-dev
+    - python2.7-dev
+    - python3-dev
     - vim
     - task # dependence for taskwiki
     - libx11-dev

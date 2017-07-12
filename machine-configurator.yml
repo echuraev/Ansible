@@ -16,7 +16,10 @@
     - role: dropbox
       become: yes
       become_user: root
-    - role: vim
+    #- role: vim
+    #- become: yes
+    #- become_user: root
+    - role: vim-build
       become: yes
       become_user: root
     #- role: rxvt-unicode
