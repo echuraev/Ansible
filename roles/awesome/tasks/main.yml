@@ -27,6 +27,7 @@
     - xscreensaver-data-extra
     - xscreensaver-screensaver-bsod
     - xscreensaver-screensaver-webcollage
+    - screengrab                              # screenshot util
   become: yes
   become_user: root
 
