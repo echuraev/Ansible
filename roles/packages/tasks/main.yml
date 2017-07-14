@@ -36,6 +36,10 @@
     - x11vnc
     - tightvncserver
     - darktable
+    - gimp
+    - remmina
+    - remmina-plugin-vnc
+    - remmina-plugin-rdp
   become: yes
   become_user: root
 
