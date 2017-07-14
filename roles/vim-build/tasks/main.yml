@@ -17,6 +17,8 @@
     - ruby-dev
     - libperl-dev
     - libncurses5-dev
+    - libgnome2-dev
+    - libgtk2.0-dev
     - libatk1.0-dev
     - libx11-dev
     - libxpm-dev
@@ -43,9 +45,8 @@
   become: yes
   become_user: echuraev
 
-# Add to configure if you want to build your local version of vim --prefix=/home/echuraev/.bin/vim
 - name: Configure vim
-  shell: cd /tmp/vim && ./configure --with-features=huge --enable-multibyte --enable-rubyinterp=dynamic --with-ruby-command=$(which ruby) --enable-pythoninterp=dynamic --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu --enable-python3interp=dynamic --with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu --enable-perlinterp=dynamic --enable-luainterp --with-luajit --enable-cscope --with-x --enable-fontset --enable-largefile --with-compiledby="echuraev" --enable-fail-if-missing
+  shell: cd /tmp/vim && ./configure --with-features=huge --enable-multibyte --enable-rubyinterp=dynamic --with-ruby-command=$(which ruby) --enable-pythoninterp=dynamic --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu --enable-python3interp=dynamic --with-python3-config-dir=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu --enable-perlinterp=dynamic --enable-luainterp --with-luajit --enable-cscope --with-x --enable-gui=auto --enable-gtk2-check --enable-gnome-check --enable-fontset --enable-largefile --with-compiledby="echuraev" --enable-fail-if-missing --prefix=/usr/local
   when: vim_check.rc != 0
   become: yes
   become_user: echuraev
