@@ -1,0 +1,36 @@
+---
+# Use to remove 'dpkg -r vim'
+- name: Check if ranger is installed
+  command: which ranger
+  ignore_errors: yes
+  register: ranger_check
+
+- name: Install ranger packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - caca-utils
+    - highlight
+    - atool
+    - w3m
+    - poppler-utils
+    - mediainfo
+    - odt2txt
+  become: yes
+  become_user: root
+
+- name: Download ranger sources
+  git:
+    repo: 'https://github.com/ranger/ranger'
+    dest: /home/echuraev/.bin/ranger-sources
+  when: ranger_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Create symling
+  shell: ln -s /home/echuraev/.bin/ranger-sources/ranger.py /home/echuraev/.bin/ranger
+  when: ranger_check.rc != 0
+  become: yes
+  become_user: echuraev
+

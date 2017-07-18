@@ -25,4 +25,7 @@
     #- role: rxvt-unicode
     #  become: yes
     #  become_user: root
+    - role: ranger
+      become: yes
+      become_user: root
 
