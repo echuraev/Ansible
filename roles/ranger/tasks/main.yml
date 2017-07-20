@@ -1,9 +1,7 @@
 ---
 # Use to remove 'dpkg -r vim'
-- name: Check if ranger is installed
-  command: which ranger
-  ignore_errors: yes
-  register: ranger_check
+- stat: path=~/.bin/ranger
+  register: ranger
 
 - name: Install ranger packages
   package:
@@ -23,14 +21,14 @@
 - name: Download ranger sources
   git:
     repo: 'https://github.com/ranger/ranger'
-    dest: /home/echuraev/.bin/ranger-sources
-  when: ranger_check.rc != 0
+    dest: ~/.bin/ranger-sources
+  when: ranger.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Create symling
-  shell: ln -s /home/echuraev/.bin/ranger-sources/ranger.py /home/echuraev/.bin/ranger
-  when: ranger_check.rc != 0
+  shell: ln -s ~/.bin/ranger-sources/ranger.py ~/.bin/ranger
+  when: ranger.stat.exists == False
   become: yes
   become_user: echuraev
 
