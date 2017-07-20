@@ -14,6 +14,7 @@
     - highlight
     - atool
     - w3m
+    - w3m-img
     - poppler-utils
     - mediainfo
     - odt2txt
