@@ -28,6 +28,7 @@
     - xscreensaver-screensaver-bsod
     - xscreensaver-screensaver-webcollage
     - screengrab                              # screenshot util
+    - volumeicon-alsa                         # tray sound icon
   become: yes
   become_user: root
 
