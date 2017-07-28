@@ -42,6 +42,7 @@
     - remmina-plugin-rdp
     - anki
     - mplayer
+    - mono-xbuild
   become: yes
   become_user: root
 
