@@ -12,6 +12,7 @@
   with_items:
       - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
       - ppa:pmjdebruijn/darktable-release       # Darktable repository
+      - ppa:ermshiperete/monodevelop            # Mono
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
@@ -42,7 +43,9 @@
     - remmina-plugin-rdp
     - anki
     - mplayer
+    - monodevelop-current
     - mono-xbuild
+    - mono-complete
   become: yes
   become_user: root
 
