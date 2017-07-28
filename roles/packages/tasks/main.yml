@@ -40,6 +40,8 @@
     - remmina
     - remmina-plugin-vnc
     - remmina-plugin-rdp
+    - anki
+    - mplayer
   become: yes
   become_user: root
 
