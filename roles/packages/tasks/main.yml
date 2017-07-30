@@ -13,6 +13,7 @@
       - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
       - ppa:pmjdebruijn/darktable-release       # Darktable repository
       - ppa:ermshiperete/monodevelop            # Mono
+      - ppa:sethj/silentcast                    # Silentcast
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
@@ -46,6 +47,7 @@
     - monodevelop-current
     - mono-xbuild
     - mono-complete
+    - silentcast
   become: yes
   become_user: root
 
