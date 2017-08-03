@@ -48,6 +48,11 @@
     - mono-xbuild
     - mono-complete
     - silentcast
+    - texlive-latex-base
+    - texlive-fonts-recommended
+    - texlive-fonts-extra
+    - texlive-latex-extra
+    - texlive-full
   become: yes
   become_user: root
 
