@@ -28,4 +28,7 @@
     - role: ranger
       become: yes
       become_user: root
+    - role: ctags-build
+      become: yes
+      become_user: root
 
