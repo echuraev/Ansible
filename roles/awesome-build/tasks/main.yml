@@ -1,0 +1,79 @@
+---
+- name: Check if awesome is installed
+  command: which awesome
+  ignore_errors: yes
+  register: awesome_check
+
+- name: Download Awesome WM sources
+  git:
+    repo: 'https://github.com/awesomeWM/awesome'
+    dest: /tmp/awesomewm
+  when: awesome_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Install Awesome dependencies packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - xscreensaver
+    - xscreensaver-gl-extra
+    - xscreensaver-data-extra
+    - xscreensaver-screensaver-bsod
+    - xscreensaver-screensaver-webcollage
+    - screengrab                              # screenshot util
+    - volumeicon-alsa                         # tray sound icon
+    - libxcb-cursor-dev
+    - libxcb-util-dev
+    - libxcb-keysyms1-dev
+    - libxcb-shape0-dev
+    - libxcb-randr0-dev
+    - libxcb-xtest0-dev
+    - libxcb-xinerama0-dev
+    - libxcb-icccm4-dev
+    - libxcb-xkb-dev
+    - libxkbcommon-dev
+    - libxkbcommon-x11-dev
+    - libxcb-xrm-dev
+    - libxdg-basedir-dev
+    - libstartup-notification0-dev
+    - lua5.2
+  become: yes
+  become_user: root
+
+- name: Make Awesome WM
+  shell: cd /tmp/awesomewm && make -j8
+  when: awesome_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make Awesome WM package
+  shell: cd /tmp/awesomewm && make -j8 package
+  when: awesome_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Create directory for installation packages
+  file: path=~/.bin/install_packages/ state=directory recurse=yes
+  when: awesome_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Find install packages
+  find:
+    paths: "/tmp/awesomewm/build"
+    patterns: "*.deb"
+    file_type: "file"
+  when: awesome_check.rc != 0
+  register: find_result
+
+- name: Copy compiled package
+  copy: src={{ find_result.files.0.path }} dest=~/.bin/install_packages/awesome_install.deb
+  when: awesome_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Install package
+  shell: dpkg -i {{ find_result.files.0.path }}
+  when: awesome_check.rc != 0

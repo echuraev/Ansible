@@ -9,7 +9,10 @@
     - role: packages
       become: yes
       become_user: root
-    - role: awesome
+    #- role: awesome
+    #- become: yes
+    #- become_user: root
+    - role: awesome-build
       become: yes
       become_user: root
     - role: user-settings

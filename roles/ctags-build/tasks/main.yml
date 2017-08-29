@@ -1,43 +1,44 @@
 ---
 - name: Check if ctags is installed
-  command: which ctags
-  ignore_errors: yes
+  stat: path=~/.bin/ctags
   register: ctags_check
+  become: yes
+  become_user: echuraev
 
 - name: Download Universal ctags sources
   git:
     repo: 'https://github.com/universal-ctags/ctags'
     dest: /tmp/ctags
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Autogen files
   shell: cd /tmp/ctags && ./autogen.sh
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Configure ctags
   shell: cd /tmp/ctags && ./configure --prefix $HOME/.bin/ctags-build
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Make ctags
   shell: cd /tmp/ctags && make -j8
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Make install ctags
   shell: cd /tmp/ctags && make -j8 install
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
 
 - name: Create symlinks
   shell: ln -s $HOME/.bin/ctags-build/bin/ctags $HOME/.bin/ctags
-  when: ctags_check.rc != 0
+  when: ctags_check.stat.exists == False
   become: yes
   become_user: echuraev
