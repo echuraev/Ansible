@@ -54,6 +54,8 @@
     - texlive-latex-extra
     - texlive-full
     - autoconf
+    - python-tk
+    - python3-tk
   become: yes
   become_user: root
 
