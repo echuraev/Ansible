@@ -3,7 +3,7 @@
 - stat: path=~/.bin/ranger
   register: ranger
 
-- name: Install ranger packages
+- name: Install ranger packages Linux
   package:
     name: "{{ item }}"
     state: installed
@@ -17,8 +17,28 @@
     - mediainfo
     - odt2txt
     - ffmpegthumbnailer
+  when: ansible_distribution == 'Ubuntu'
   become: yes
   become_user: root
+
+- name: Install ranger packages Mac
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - highlight
+    - atool
+    - w3m
+    - mediainfo
+    - odt2txt
+    - ffmpegthumbnailer
+    - xpdf
+    - libcaca
+    - imlib2
+    - lynx
+  when: ansible_distribution == 'MacOSX'
+  become: yes
+  become_user: echuraev
 
 - name: Download ranger sources
   git:
