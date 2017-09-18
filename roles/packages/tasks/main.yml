@@ -14,6 +14,7 @@
       - ppa:pmjdebruijn/darktable-release       # Darktable repository
       - ppa:ermshiperete/monodevelop            # Mono
       - ppa:sethj/silentcast                    # Silentcast
+      - ppa:plushuang-tw/uget-stable            # Uget
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
@@ -56,6 +57,7 @@
     - autoconf
     - python-tk
     - python3-tk
+    - uget
   become: yes
   become_user: root
 
