@@ -15,7 +15,13 @@
       - ppa:ermshiperete/monodevelop            # Mono
       - ppa:sethj/silentcast                    # Silentcast
       - ppa:plushuang-tw/uget-stable            # Uget
+      - ppa:git-core/ppa                        # git lfs
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Add git lfs to apt-get install
+  shell: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
   become: yes
   become_user: root
 
@@ -58,6 +64,7 @@
     - python-tk
     - python3-tk
     - uget
+    - git-lfs
   become: yes
   become_user: root
 
@@ -66,3 +73,7 @@
   become: yes
   become_user: root
 
+- name: Install git lfs
+  shell: git lfs install
+  become: yes
+  become_user: echuraev
