@@ -12,6 +12,7 @@
   with_items:
       - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
       - ppa:pmjdebruijn/darktable-release       # Darktable repository
+      - ppa:dhor/myway                          # RawTherapee
       - ppa:ermshiperete/monodevelop            # Mono
       - ppa:sethj/silentcast                    # Silentcast
       - ppa:plushuang-tw/uget-stable            # Uget
@@ -45,6 +46,7 @@
     - x11vnc
     - tightvncserver
     - darktable
+    - rawtherapee
     - gimp
     - remmina
     - remmina-plugin-vnc
