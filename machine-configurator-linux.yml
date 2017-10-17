@@ -34,4 +34,7 @@
     - role: ctags-build
       become: yes
       become_user: root
+    - role: terminfo
+      become: yes
+      become_user: echuraev
 
