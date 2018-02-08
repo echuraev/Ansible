@@ -1,0 +1,41 @@
+---
+- stat: path=~/.bin/kitty
+  register: kitty
+
+- name: Install Kitty packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - libgl1-mesa-dev
+    - libxcursor-dev
+    - libxrandr-dev
+    - libxinerama-dev
+    - libxkbcommon-x11-dev
+    - compton
+  become: yes
+  become_user: root
+
+- name: Download kitty sources
+  git:
+    repo: 'https://github.com/kovidgoyal/kitty'
+    dest: ~/.bin/kitty-sources
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make kitty
+  shell: cd $HOME/.bin/kitty-sources && make -j8
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Copy launch script
+  copy:
+    src: "kitty"
+    dest: ~/.bin
+    mode: u=rx,g=rx,o=rx
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+

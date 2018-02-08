@@ -25,6 +25,9 @@
     - role: vim-build
       become: yes
       become_user: root
+    - role: kitty
+      become: yes
+      become_user: root
     #- role: rxvt-unicode
     #  become: yes
     #  become_user: root
