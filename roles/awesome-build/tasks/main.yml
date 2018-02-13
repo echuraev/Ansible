@@ -39,6 +39,8 @@
     - libxdg-basedir-dev
     - libstartup-notification0-dev
     - lua5.2
+    - lua-json
+    - lua-sec
   become: yes
   become_user: root
 

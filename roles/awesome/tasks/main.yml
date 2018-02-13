@@ -29,6 +29,8 @@
     - xscreensaver-screensaver-webcollage
     - screengrab                              # screenshot util
     - volumeicon-alsa                         # tray sound icon
+    - lua-json
+    - lua-sec
   become: yes
   become_user: root
 
