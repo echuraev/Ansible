@@ -1,0 +1,46 @@
+---
+- name: Check if vifm is installed
+  command: which vifm
+  ignore_errors: yes
+  register: vifm_check
+
+- name: Install vifm packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - sshfs
+    - curlftpfs
+    - fuse
+    - fuse-zip
+    - fusefat
+    - fuseiso
+    - libncursesw5
+    - libncursesw5-dev
+  become: yes
+  become_user: root
+
+- name: Download vifm sources
+  git:
+    repo: 'https://github.com/vifm/vifm'
+    dest: /tmp/vifm
+  when: vifm_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Configure vifm
+  shell: cd /tmp/vifm && ./configure --enable-extended-keys --enable-desktop-files --enable-remote-cmds
+  when: vifm_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make vifm
+  shell: cd /tmp/vifm && make -j8
+  when: vifm_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make install vifm
+  shell: cd /tmp/vifm && make -j8 install
+  when: vifm_check.rc != 0
+
