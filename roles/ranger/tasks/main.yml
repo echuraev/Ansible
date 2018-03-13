@@ -36,9 +36,22 @@
     - libcaca
     - imlib2
     - lynx
+    - elinks
+    - exiftool
   when: ansible_distribution == 'MacOSX'
   become: yes
   become_user: echuraev
+
+- name: Check if imgcat is installed
+  stat: path=~/.bin/imgcat
+  register: imgcat_check
+  when: ansible_distribution == 'MacOSX'
+  become: yes
+  become_user: echuraev
+
+- name: Install imgcat
+  get_url: dest=~/.bin/imgcat url=https://raw.githubusercontent.com/gnachman/iTerm2/master/tests/imgcat mode=0755
+  when: ansible_distribution == 'MacOSX' and imgcat_check.stat.exists == False
 
 - name: Download ranger sources
   git:
