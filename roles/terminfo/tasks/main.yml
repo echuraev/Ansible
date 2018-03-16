@@ -9,3 +9,4 @@
     - tmux.terminfo
     - tmux-256color.terminfo
     - xterm-256color.terminfo
+    - screen-256color.terminfo
