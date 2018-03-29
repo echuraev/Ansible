@@ -15,6 +15,9 @@
     - role: awesome-build
       become: yes
       become_user: root
+    - role: rofi-build
+      become: yes
+      become_user: root
     - role: user-settings
     - role: dropbox
       become: yes

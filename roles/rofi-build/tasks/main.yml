@@ -1,0 +1,76 @@
+---
+- name: Check if rofi is installed
+  command: which rofi
+  ignore_errors: yes
+  register: rofi_check
+
+- name: Install rofi dependencies packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - bison
+    - flex
+    - libxcb-ewmh-dev
+    - librsvg2-dev
+    - check
+  become: yes
+  become_user: root
+
+- name: Download check sources
+  git:
+    repo: 'https://github.com/libcheck/check'
+    dest: /tmp/check-source
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Build check
+  shell: cd /tmp/check-source && autoreconf --install && ./configure && make -j8
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Install check
+  shell: cd /tmp/check-source && make -j8 install
+  when: rofi_check.rc != 0
+  become: yes
+
+- name: Download rofi sources
+  git:
+    repo: 'https://github.com/DaveDavenport/rofi'
+    dest: /tmp/rofi
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Update rofi submodiles
+  shell: cd /tmp/rofi && git submodule update --init
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Generate build system
+  shell: cd /tmp/rofi && autoreconf -i
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Configure rofi
+  shell: cd /tmp/rofi && mkdir build && cd build && ../configure --prefix=$HOME/.local/
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make rofi
+  shell: cd /tmp/rofi && make -j8
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Make install rofi
+  shell: cd /tmp/rofi && make install -j8
+  when: rofi_check.rc != 0
+  become: yes
+  become_user: echuraev
+

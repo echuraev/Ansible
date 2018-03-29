@@ -26,14 +26,8 @@
     - python-dev
     - python2.7-dev
     - python3-dev
-    - task # dependence for taskwiki
     - libxkbfile-dev
     - checkinstall
-  become: yes
-  become_user: root
-
-- name: Instal tasklib
-  pip: name=tasklib editable=false
   become: yes
   become_user: root
 
