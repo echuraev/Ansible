@@ -13,8 +13,76 @@
     - libxinerama-dev
     - libxkbcommon-x11-dev
     - compton
+    - libfreetype6-dev
+    - libglib2.0-dev
+    - libcairo2-dev
+    - autoconf
+    - automake
+    - libtool
+    - pkg-config
+    - ragel
+    - gtk-doc-tools
   become: yes
   become_user: root
+
+- name: Download harfbuzz sources # >= 1.5
+  git:
+    repo: 'https://github.com/harfbuzz/harfbuzz'
+    dest: /tmp/harfbuzz
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Configure harfbuzz
+  shell: cd /tmp/harfbuzz && ./autogen.sh && ./configure
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make harfbuzz
+  shell: cd /tmp/harfbuzz && make -j8
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make install harfbuzz
+  shell: cd /tmp/harfbuzz && make -j8 install
+  when: kitty.stat.exists == False
+
+- name: Make dir for libpng16
+  file: path=/tmp/libpng16 state=directory
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Download libpng16
+  get_url: dest=/tmp/libpng16/libpng-1.6.34.tar.xz url=https://sourceforge.net/projects/libpng/files/libpng16/1.6.34/libpng-1.6.34.tar.xz
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Extract libpng16 archive
+  unarchive:
+    src: /tmp/libpng16/libpng-1.6.34.tar.xz
+    dest: /tmp/libpng16/
+  become: yes
+  become_user: echuraev
+
+- name: Configure libpng16
+  shell: cd /tmp/libpng16/libpng-1.6.34 && ./configure
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make libpng16
+  shell: cd /tmp/libpng16/libpng-1.6.34 && make -j8
+  when: kitty.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make install libpng16
+  shell: cd /tmp/libpng16/libpng-1.6.34 && make -j8 install
+  when: kitty.stat.exists == False
 
 - name: Download kitty sources
   git:
