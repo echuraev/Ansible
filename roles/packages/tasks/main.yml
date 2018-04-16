@@ -23,6 +23,7 @@
 
 - name: Add git lfs to apt-get install
   shell: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
@@ -37,10 +38,16 @@
     - mc
     - htop
     - tmux
-    - rxvt-unicode-256color
     - cmake
-    - python-pip
-    - openssh-server
+    - autoconf
+    - wget
+
+- name: Install Linux packages
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - rxvt-unicode-256color
     - google-chrome-stable
     - pavucontrol
     - x11vnc
@@ -51,31 +58,35 @@
     - remmina
     - remmina-plugin-vnc
     - remmina-plugin-rdp
-    - anki
     - mplayer
     - monodevelop-current
     - mono-xbuild
     - mono-complete
     - silentcast
+    - uget
+    - git-lfs
+    - python-pip
+    - openssh-server
+    - anki
     - texlive-latex-base
     - texlive-fonts-recommended
     - texlive-fonts-extra
     - texlive-latex-extra
     - texlive-full
-    - autoconf
     - python-tk
     - python3-tk
-    - uget
-    - git-lfs
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
 - name: Upgrade pip
   pip: name=pip extra_args=--upgrade
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
 - name: Install git lfs
   shell: git lfs install
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: echuraev

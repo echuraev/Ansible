@@ -6,11 +6,12 @@
   become_user: echuraev
 
   roles:
+    - role: packages
     - role: user-settings
-    - role: ranger
-      become: yes
-      become_user: root
-    - role: ctags-build
-      become: yes
-      become_user: root
+    #- role: ranger
+    #  become: yes
+    #  become_user: root
+    #- role: ctags-build
+    #  become: yes
+    #  become_user: root
 
