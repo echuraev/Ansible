@@ -8,10 +8,7 @@
   roles:
     - role: packages
     - role: user-settings
-    #- role: ranger
-    #  become: yes
-    #  become_user: root
-    #- role: ctags-build
-    #  become: yes
-    #  become_user: root
+    - role: terminfo
+    - role: ranger
+    - role: ctags-build
 

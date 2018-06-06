@@ -21,6 +21,15 @@
   become: yes
   become_user: root
 
+- name: Install cask packages homebrew
+  homebrew_cask:
+    name: "{{ item }}"
+  with_items:
+    - xquartz
+  when: ansible_distribution == 'MacOSX'
+  become: yes
+  become_user: echuraev
+
 - name: Install ranger packages Mac
   package:
     name: "{{ item }}"
