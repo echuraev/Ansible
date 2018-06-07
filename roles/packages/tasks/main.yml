@@ -40,8 +40,10 @@
     - tmux
     - cmake
     - autoconf
+    - automake
     - wget
     - gawk
+    - pkg-config
 
 - name: Install Linux packages
   package:

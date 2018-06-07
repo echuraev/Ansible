@@ -42,3 +42,10 @@
   get_url: dest="~/Library/Fonts/Literation Mono Powerline Nerd Font Complete Mono.ttf" url=https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/LiberationMono/complete/Literation%20Mono%20Nerd%20Font%20Complete%20Mono.ttf
   when: ansible_distribution == 'MacOSX' and mac_font_installed.stat.exists == False
 
+- name: Set zsh as default shell for user
+  user:
+    name: echuraev
+    shell: /bin/zsh
+  become_user: root
+  become: yes
+
