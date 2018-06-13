@@ -1,0 +1,23 @@
+---
+- name: Add repo with chunkwm to homebrew
+  homebrew_tap:
+    name: crisidev/homebrew-chunkwm
+
+- name: Install stable version of chunkwm
+  homebrew:
+    name: chunkwm
+    state: present
+    update_homebrew: yes
+
+- name: Start chunkwm service
+  command: /usr/local/bin/brew services start chunkwm
+
+- name: Install skhd
+  homebrew:
+    name: koekeishiya/formulae/skhd
+    state: present
+    update_homebrew: yes
+
+- name: Start skhd service
+  command: /usr/local/bin/brew services start skhd
+

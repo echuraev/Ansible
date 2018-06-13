@@ -8,6 +8,7 @@
   roles:
     - role: packages
     - role: user-settings
+    - role: mac-tiling-wm
     - role: terminfo
     - role: ranger
     - role: ctags-build
