@@ -44,6 +44,7 @@
     - wget
     - gawk
     - pkg-config
+    - gdb
 
 - name: Install Linux packages
   package:
