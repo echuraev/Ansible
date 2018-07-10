@@ -46,6 +46,15 @@
     - pkg-config
     - gdb
 
+- name: Install cask packages homebrew
+  homebrew_cask:
+    name: "{{ item }}"
+  with_items:
+    - mactex
+  when: ansible_distribution == 'MacOSX'
+  become: yes
+  become_user: echuraev
+
 - name: Install Linux packages
   package:
     name: "{{ item }}"
