@@ -51,6 +51,8 @@
     name: "{{ item }}"
   with_items:
     - mactex
+    - caskroom/cask/brew-cask
+    - cargo
   when: ansible_distribution == 'MacOSX'
   become: yes
   become_user: echuraev
