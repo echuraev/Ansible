@@ -28,6 +28,7 @@
     - python3-dev
     - libxkbfile-dev
     - checkinstall
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
@@ -39,7 +40,7 @@
   become: yes
   become_user: echuraev
 
-- name: Configure vim
+- name: Configure vim Linux
   shell: cd /tmp/vim && ./configure --with-features=huge \
                                     --enable-multibyte \
                                     --enable-rubyinterp=dynamic \
@@ -61,7 +62,25 @@
                                     --with-compiledby="echuraev" \
                                     --enable-fail-if-missing \
                                     --prefix=/usr/local
-  when: vim_check.rc != 0
+  when: vim_check.rc != 0 and (ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian')
+  become: yes
+  become_user: echuraev
+
+- name: Configure vim Mac
+  shell: cd /tmp/vim && ./configure --with-features=huge \
+                                    --enable-multibyte \
+                                    --enable-rubyinterp=dynamic \
+                                    --with-ruby-command=$(which ruby) \
+                                    --enable-pythoninterp=yes \
+                                    --enable-python3interp=yes \
+                                    --enable-perlinterp=dynamic \
+                                    --enable-cscope \
+                                    --enable-fontset \
+                                    --enable-largefile \
+                                    --with-compiledby="echuraev" \
+                                    --enable-fail-if-missing \
+                                    --prefix=/usr/local
+  when: vim_check.rc != 0 and ansible_distribution == 'MacOSX'
   become: yes
   become_user: echuraev
 
@@ -72,6 +91,8 @@
   become_user: echuraev
 
 - name: Make install vim
-  shell: cd /tmp/vim && make -j8 install
+  shell: cd /tmp/vim && make install
   when: vim_check.rc != 0
+  become: yes
+  become_user: root
 
