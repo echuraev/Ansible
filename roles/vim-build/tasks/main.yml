@@ -66,13 +66,16 @@
   become: yes
   become_user: echuraev
 
+# Config directory should contain config.c file
 - name: Configure vim Mac
   shell: cd /tmp/vim && ./configure --with-features=huge \
                                     --enable-multibyte \
                                     --enable-rubyinterp=dynamic \
                                     --with-ruby-command=$(which ruby) \
                                     --enable-pythoninterp=yes \
+                                    --with-python-config-dir=/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config \
                                     --enable-python3interp=yes \
+                                    --with-python3-config-dir=/usr/local/Cellar/python/3.7.0/Frameworks/Python.framework/Versions/3.7/lib/python3.7/config-3.7m-darwin \
                                     --enable-perlinterp=dynamic \
                                     --enable-cscope \
                                     --enable-fontset \
