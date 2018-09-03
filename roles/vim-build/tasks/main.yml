@@ -67,6 +67,11 @@
   become_user: echuraev
 
 # Config directory should contain config.c file
+#
+# Had a problem with YCM and python@2. Use system python2.7.
+# 1. Run: brew uninstall python@2
+# 2. Install ansible using pip
+# 3. Run ansible script
 - name: Configure vim Mac
   shell: cd /tmp/vim && ./configure --with-features=huge \
                                     --enable-multibyte \
