@@ -21,6 +21,14 @@
   become: yes
   become_user: root
 
+- name: Install EPEL repo.
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    state: present
+  when: ansible_os_family == 'RedHat'
+  become: yes
+  become_user: root
+
 - name: Add git lfs to apt-get install
   shell: curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
@@ -43,7 +51,6 @@
     - automake
     - wget
     - gawk
-    - pkg-config
     - gdb
 
 - name: Install cask packages homebrew
@@ -57,11 +64,12 @@
   become: yes
   become_user: echuraev
 
-- name: Install Linux packages
+- name: Install Ubuntu packages
   package:
     name: "{{ item }}"
     state: installed
   with_items:
+    - pkg-config
     - rxvt-unicode-256color
     - google-chrome-stable
     - pavucontrol
