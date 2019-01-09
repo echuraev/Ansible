@@ -6,7 +6,7 @@
 - name: Install ranger packages Linux
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - caca-utils
     - highlight
@@ -33,7 +33,7 @@
 - name: Install ranger packages Mac
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - highlight
     - atool

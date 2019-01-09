@@ -7,7 +7,7 @@
 - name: Install vifm packages
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - sshfs
     - curlftpfs

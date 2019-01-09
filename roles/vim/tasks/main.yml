@@ -19,7 +19,7 @@
 - name: Install VIM packages
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - python-dev
     - python2.7-dev

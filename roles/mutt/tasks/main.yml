@@ -1,0 +1,17 @@
+---
+- name: Check if mutt is installed
+  command: which mutt
+  ignore_errors: yes
+  register: mutt_check
+  become: yes
+  become_user: echuraev
+
+- name: Install mutt packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - mutt
+  become: yes
+  become_user: root
+

@@ -13,7 +13,7 @@
       - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
       - ppa:pmjdebruijn/darktable-release       # Darktable repository
       - ppa:dhor/myway                          # RawTherapee
-      - ppa:ermshiperete/monodevelop            # Mono
+      #- ppa:ermshiperete/monodevelop            # Mono
       - ppa:sethj/silentcast                    # Silentcast
       - ppa:plushuang-tw/uget-stable            # Uget
       - ppa:git-core/ppa                        # git lfs
@@ -38,7 +38,7 @@
 - name: Install packages
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - zsh
     - curl
@@ -67,7 +67,7 @@
 - name: Install Ubuntu packages
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - pkg-config
     - rxvt-unicode-256color
@@ -82,10 +82,10 @@
     - remmina-plugin-vnc
     - remmina-plugin-rdp
     - mplayer
-    - monodevelop-current
-    - mono-xbuild
-    - mono-complete
-    - silentcast
+    #- monodevelop-current
+    #- mono-xbuild
+    #- mono-complete
+    #- silentcast
     - uget
     - git-lfs
     - python-pip
