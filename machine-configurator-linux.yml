@@ -46,4 +46,7 @@
     - role: terminfo
       become: yes
       become_user: echuraev
+    - role: mutt
+      become: yes
+      become_user: root
 
