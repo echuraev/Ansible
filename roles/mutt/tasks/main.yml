@@ -12,7 +12,10 @@
     state: present
   with_items:
     - mutt
-    - offlineimap
+    - isync
+    - imapfilter
+    - msmtp
+    - notmuch
   become: yes
   become_user: root
 
