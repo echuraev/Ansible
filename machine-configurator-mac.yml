@@ -13,4 +13,5 @@
     - role: terminfo
     - role: ranger
     - role: ctags-build
+    - role: mutt
 

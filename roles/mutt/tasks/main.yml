@@ -1,11 +1,11 @@
 ---
-- name: Check if mutt is installed
-  command: which mutt
-  ignore_errors: yes
-  register: mutt_check
-  become: yes
-  become_user: echuraev
-
+#- name: Check if mutt is installed
+#  command: which mutt
+#  ignore_errors: yes
+#  register: mutt_check
+#  become: yes
+#  become_user: echuraev
+#
 - name: Install mutt packages
   package:
     name: "{{ item }}"
@@ -16,6 +16,16 @@
     - imapfilter
     - msmtp
     - notmuch
-  become: yes
-  become_user: root
+    - gawk
 
+# http://unixwiz.net/tools/lockrun.html
+
+# Make some directories required by configuration in the dotfiles; these should
+# probably be separate roles.
+- name: Mutt - create auxiliary directories
+  file: path={{ item }} state=directory
+  loop:
+    # mbsync will die on first sync without this:
+    - ~/.mail
+  become: yes
+  become_user: echuraev
