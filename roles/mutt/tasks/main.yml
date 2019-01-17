@@ -17,6 +17,7 @@
     - msmtp
     - notmuch
     - gawk
+    - pandoc
 
 - name: Install mutt packages for Mac
   package:
