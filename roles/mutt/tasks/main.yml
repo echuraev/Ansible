@@ -19,6 +19,7 @@
     - gawk
     - pandoc
     - urlview
+    - lbdb
 
 - name: Install mutt packages for Mac
   package:
