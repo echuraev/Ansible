@@ -18,6 +18,7 @@
     - notmuch
     - gawk
     - pandoc
+    - urlview
 
 - name: Install mutt packages for Mac
   package:
