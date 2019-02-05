@@ -52,6 +52,7 @@
     - wget
     - gawk
     - gdb
+    - buku
 
 - name: Install cask packages homebrew
   homebrew_cask:
