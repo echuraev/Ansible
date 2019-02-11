@@ -53,6 +53,7 @@
     - gawk
     - gdb
     - gcc    # Need it on CentOS
+    - yarn
 
 - name: Install cask packages homebrew
   homebrew_cask:
