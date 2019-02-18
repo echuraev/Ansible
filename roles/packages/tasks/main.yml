@@ -53,7 +53,19 @@
     - gawk
     - gdb
     - gcc    # Need it on CentOS
-    - yarn
+    - llvm   # For autocompletion
+
+# Some info get from here: https://developers.redhat.com/blog/2018/07/07/yum-install-gcc7-clang/
+- name: Install RedHat packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - llvm-toolset-7
+    - llvm-toolset-7-clang-tools-extra  # clangd
+  when: ansible_os_family == 'RedHat'
+  become: yes
+  become_user: root
 
 - name: Install cask packages homebrew
   homebrew_cask:
