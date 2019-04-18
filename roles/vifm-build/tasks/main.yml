@@ -4,7 +4,20 @@
   ignore_errors: yes
   register: vifm_check
 
-- name: Install vifm packages
+- name: Install vifm packages RedHat
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - sshfs
+    - curlftpfs
+    - fuse
+    - fuseiso
+  when: ansible_os_family == 'RedHat'
+  become: yes
+  become_user: root
+
+- name: Install vifm packages Ubuntu
   package:
     name: "{{ item }}"
     state: present
@@ -17,6 +30,7 @@
     - fuseiso
     - libncursesw5
     - libncursesw5-dev
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
@@ -25,6 +39,12 @@
     repo: 'https://github.com/vifm/vifm'
     dest: /tmp/vifm
   when: vifm_check.rc != 0
+  become: yes
+  become_user: echuraev
+
+- name: Reconf on RedHat
+  shell: cd /tmp/vifm && autoreconf -f -i
+  when: vifm_check.rc != 0 and ansible_os_family == 'RedHat'
   become: yes
   become_user: echuraev
 
