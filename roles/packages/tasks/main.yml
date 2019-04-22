@@ -74,7 +74,6 @@
     - mactex
     - caskroom/cask/brew-cask
     - cargo
-    - buku
   when: ansible_distribution == 'MacOSX'
   become: yes
   become_user: echuraev
@@ -104,6 +103,7 @@
     - uget
     - git-lfs
     - python-pip
+    - python3-pip
     - openssh-server
     - anki
     - texlive-latex-base
@@ -113,7 +113,6 @@
     - texlive-full
     - python-tk
     - python3-tk
-    - buku
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root

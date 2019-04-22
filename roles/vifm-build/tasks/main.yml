@@ -4,6 +4,12 @@
   ignore_errors: yes
   register: vifm_check
 
+- name: Install Überzug for image preview
+  pip:
+    executable: pip3
+    name: ueberzug
+  when: ansible_distribution != 'MacOSX'
+
 - name: Install vifm packages RedHat
   package:
     name: "{{ item }}"
