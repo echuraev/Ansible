@@ -158,5 +158,6 @@
   copy:
     src: /tmp/epub2txt/epub2txt
     dest: ~/.bin/epub2txt
+    mode: a+x
   when: epub2txt_check.stat.exists == False
 
