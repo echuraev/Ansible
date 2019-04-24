@@ -51,6 +51,8 @@
     - automake
     - wget
     - gawk
+    - sshfs
+    - curlftpfs
     - gdb
     - gcc    # Need it on CentOS
     - llvm   # For autocompletion
@@ -71,6 +73,8 @@
   homebrew_cask:
     name: "{{ item }}"
   with_items:
+    - iterm2
+    - osxfuse
     - mactex
     - caskroom/cask/brew-cask
     - cargo
@@ -128,3 +132,31 @@
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: echuraev
+
+- name: Check if epub2txt is installed
+  stat:
+    path: ~/.bin/epub2txt
+  register: epub2txt_check
+  become: yes
+  become_user: echuraev
+
+- name: Download epub2txt sources
+  git:
+    repo: 'https://github.com/kevinboone/epub2txt'
+    dest: /tmp/epub2txt
+  when: epub2txt_check.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Make epub2txt
+  shell: cd /tmp/epub2txt && make -j8
+  when: epub2txt_check.stat.exists == False
+  become: yes
+  become_user: echuraev
+
+- name: Copy epub2txt to bin directory
+  copy:
+    src: /tmp/epub2txt/epub2txt
+    dest: ~/.bin/epub2txt
+  when: epub2txt_check.stat.exists == False
+

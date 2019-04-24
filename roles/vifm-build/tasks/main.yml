@@ -15,8 +15,6 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - sshfs
-    - curlftpfs
     - fuse
     - fuseiso
   when: ansible_os_family == 'RedHat'
@@ -28,8 +26,6 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - sshfs
-    - curlftpfs
     - fuse
     - fuse-zip
     - fusefat
