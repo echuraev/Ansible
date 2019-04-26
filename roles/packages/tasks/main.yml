@@ -54,6 +54,7 @@
     - sshfs
     - curlftpfs
     - gdb
+    - ncdu
     - gcc    # Need it on CentOS
     - llvm   # For autocompletion
 
