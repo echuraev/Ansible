@@ -10,6 +10,13 @@
     name: ueberzug
   when: ansible_distribution != 'MacOSX'
 
+- name: Install common packages for vifm
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - exiv2   # For text image preview
+
 - name: Install vifm packages RedHat
   package:
     name: "{{ item }}"
