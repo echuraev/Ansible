@@ -49,6 +49,7 @@
     - mactex
     - macvim
     - osxfuse
+    - spectacle
     - vlc
     - xquartz
   when: ansible_distribution == 'MacOSX'
