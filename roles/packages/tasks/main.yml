@@ -1,4 +1,9 @@
 ---
+- name: Create local bin directory
+  file:
+    path: ~/.bin
+    state: directory
+
 - name: Add packages keys
   apt_key: url={{ item }} state=present
   with_items:
@@ -35,28 +40,55 @@
   become: yes
   become_user: root
 
+- name: Install cask packages homebrew
+  homebrew_cask:
+    name: "{{ item }}"
+  with_items:
+    - iterm2
+    - karabiner-elements
+    - mactex
+    - macvim
+    - osxfuse
+    - vlc
+    - xquartz
+  when: ansible_distribution == 'MacOSX'
+
+- name: Install Mac packages
+  homebrew:
+    name: "{{ item }}"
+    state: present
+    update_homebrew: yes
+    upgrade_all: yes
+  with_items:
+    - vifm
+  when: ansible_distribution == 'MacOSX'
+
 - name: Install packages
   package:
     name: "{{ item }}"
     state: present
   with_items:
-    - zsh
-    - curl
-    - git
-    - mc
-    - htop
-    - tmux
-    - cmake
     - autoconf
     - automake
-    - wget
-    - gawk
-    - sshfs
+    - cmake
+    - curl
     - curlftpfs
+    - exiv2     # For text image preview
+    - gawk
+    - gcc       # Need it on CentOS
     - gdb
+    - git
+    - htop
+    - llvm      # For autocompletion
+    - mc
     - ncdu
-    - gcc    # Need it on CentOS
-    - llvm   # For autocompletion
+    - pkg-config
+    - python3
+    - sshfs
+    - tmux
+    - unrar
+    - wget
+    - zsh
 
 # Some info get from here: https://developers.redhat.com/blog/2018/07/07/yum-install-gcc7-clang/
 - name: Install RedHat packages
@@ -70,25 +102,11 @@
   become: yes
   become_user: root
 
-- name: Install cask packages homebrew
-  homebrew_cask:
-    name: "{{ item }}"
-  with_items:
-    - iterm2
-    - osxfuse
-    - mactex
-    - caskroom/cask/brew-cask
-    - cargo
-  when: ansible_distribution == 'MacOSX'
-  become: yes
-  become_user: echuraev
-
 - name: Install Ubuntu packages
   package:
     name: "{{ item }}"
     state: present
   with_items:
-    - pkg-config
     - rxvt-unicode-256color
     - google-chrome-stable
     - pavucontrol
@@ -138,22 +156,16 @@
   stat:
     path: ~/.bin/epub2txt
   register: epub2txt_check
-  become: yes
-  become_user: echuraev
 
 - name: Download epub2txt sources
   git:
     repo: 'https://github.com/kevinboone/epub2txt'
     dest: /tmp/epub2txt
   when: epub2txt_check.stat.exists == False
-  become: yes
-  become_user: echuraev
 
 - name: Make epub2txt
   shell: cd /tmp/epub2txt && make -j8
   when: epub2txt_check.stat.exists == False
-  become: yes
-  become_user: echuraev
 
 - name: Copy epub2txt to bin directory
   copy:

@@ -8,10 +8,10 @@
   roles:
     - role: packages
     - role: user-settings
-    - role: mac-tiling-wm
-    - role: vim-build
+    #- role: mac-tiling-wm
+    #- role: vim-build
     - role: terminfo
-    - role: ranger
+    #- role: ranger
     - role: ctags-build
     - role: mutt
 

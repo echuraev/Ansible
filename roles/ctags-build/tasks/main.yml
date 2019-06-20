@@ -2,43 +2,36 @@
 - name: Check if ctags is installed
   stat: path=~/.bin/ctags
   register: ctags_check
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX'
 
 - name: Download Universal ctags sources
   git:
     repo: 'https://github.com/universal-ctags/ctags'
     dest: /tmp/ctags
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
 
 - name: Autogen files
   shell: cd /tmp/ctags && ./autogen.sh
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
 
 - name: Configure ctags
   shell: cd /tmp/ctags && ./configure --prefix $HOME/.bin/ctags-build
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
 
 - name: Make ctags
   shell: cd /tmp/ctags && make -j8
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
 
 - name: Make install ctags
   shell: cd /tmp/ctags && make -j8 install
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
 
 - name: Create symlinks
   shell: ln -s $HOME/.bin/ctags-build/bin/ctags $HOME/.bin/ctags
-  when: ctags_check.stat.exists == False
-  become: yes
-  become_user: echuraev
+  when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
+
+- name: Install ctags for MacOS
+  homebrew:
+    name: "universal-ctags/universal-ctags/universal-ctags"
+    state: head
+  when: ansible_distribution == 'MacOSX'

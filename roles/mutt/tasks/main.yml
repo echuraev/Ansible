@@ -38,5 +38,3 @@
   loop:
     # mbsync will die on first sync without this:
     - ~/.mail
-  become: yes
-  become_user: echuraev
