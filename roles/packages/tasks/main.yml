@@ -45,7 +45,9 @@
     name: "{{ item }}"
   with_items:
     - darktable
+    - digikam      # Photo viewer
     - gimp
+    - hugin        # Panorama maker
     - inkscape
     - iterm2
     - karabiner-elements
