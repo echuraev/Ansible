@@ -52,7 +52,9 @@
     - mactex
     - macvim
     - osxfuse
+    - persepolis-download-manager
     - spectacle
+    - transmission
     - vlc
     - xquartz
   when: ansible_distribution == 'MacOSX'
@@ -61,8 +63,6 @@
   homebrew:
     name: "{{ item }}"
     state: present
-    update_homebrew: yes
-    upgrade_all: yes
   with_items:
     - vifm
   when: ansible_distribution == 'MacOSX'
@@ -111,35 +111,36 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - rxvt-unicode-256color
-    - google-chrome-stable
-    - pavucontrol
-    - x11vnc
-    - tightvncserver
-    - darktable
-    - rawtherapee
-    - gimp
-    - remmina
-    - remmina-plugin-vnc
-    - remmina-plugin-rdp
-    - mplayer
-    #- monodevelop-current
-    #- mono-xbuild
     #- mono-complete
+    #- mono-xbuild
+    #- monodevelop-current
     #- silentcast
-    - uget
-    - git-lfs
-    - python-pip
-    - python3-pip
-    - openssh-server
     - anki
-    - texlive-latex-base
-    - texlive-fonts-recommended
-    - texlive-fonts-extra
-    - texlive-latex-extra
-    - texlive-full
+    - darktable
+    - gimp
+    - git-lfs
+    - google-chrome-stable
+    - mplayer
+    - openssh-server
+    - pavucontrol
+    - python-pip
     - python-tk
+    - python3-pip
     - python3-tk
+    - rawtherapee
+    - remmina
+    - remmina-plugin-rdp
+    - remmina-plugin-vnc
+    - rxvt-unicode-256color
+    - texlive-fonts-extra
+    - texlive-fonts-recommended
+    - texlive-full
+    - texlive-latex-base
+    - texlive-latex-extra
+    - tightvncserver
+    - transmission
+    - uget
+    - x11vnc
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
