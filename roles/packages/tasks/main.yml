@@ -48,6 +48,7 @@
     - darktable
     - digikam      # Photo viewer
     - gimp
+    - gnucash
     - hugin        # Panorama maker
     - inkscape
     - iterm2
@@ -56,6 +57,7 @@
     - macvim
     - osxfuse
     - persepolis-download-manager
+    - qtpass
     - spectacle
     - transmission
     - vlc
@@ -90,6 +92,7 @@
     - llvm      # For autocompletion
     - mc
     - ncdu
+    - pass
     - pkg-config
     - python3
     - sshfs
