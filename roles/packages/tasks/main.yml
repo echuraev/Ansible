@@ -78,6 +78,7 @@
     - autoconf
     - automake
     - cmake
+    - cmus
     - curl
     - curlftpfs
     - exiv2     # For text image preview
