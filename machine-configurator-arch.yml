@@ -6,6 +6,7 @@
     - role: packages
     - role: arch-packages
     - role: awesome
+    - role: dropbox
     - role: user-settings
     - role: ctags-build
     - role: terminfo

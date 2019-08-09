@@ -4,10 +4,10 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - vifm
     - xorg-server
     - xorg-xinit
     - xterm
-    - firefox
   become: yes
   become_user: root
 
@@ -51,5 +51,50 @@
   become: yes
   become_user: root
 #  }}} LightDM #
+#  Office {{{ #
+- name: Install Arch Office packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libreoffice-still
+  become: yes
+  become_user: root
+#  }}} Office #
+#  Image processing {{{ #
+- name: Install Arch Image processing
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - darktable
+    - gimp
+  become: yes
+  become_user: root
+#  }}} Image processing #
+#  Media & Audio {{{ #
+- name: Install Arch packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    #- alsa-utils
+    - pavucontrol
+    - pulseaudio
+    - pulseaudio-alsa
+    - vlc
+  become: yes
+  become_user: root
+#  }}} Media & Audio #
+#  Internet {{{ #
+- name: Install Arch packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - firefox
+  become: yes
+  become_user: root
+#  }}} Internet #
 
 # vim: foldmethod=marker:foldlevel=0

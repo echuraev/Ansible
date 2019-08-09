@@ -15,8 +15,6 @@
       become_user: root
     - role: user-settings
     - role: dropbox
-      become: yes
-      become_user: root
     #- role: vim
     #- become: yes
     #- become_user: root
