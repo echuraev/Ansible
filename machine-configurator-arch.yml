@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  become_user: "{{ ansible_env.USER | default('echuraev') }}"
+
+  roles:
+    - role: packages
+    - role: arch-packages
+    - role: awesome
+    - role: user-settings
+    - role: ctags-build
+    - role: terminfo
+

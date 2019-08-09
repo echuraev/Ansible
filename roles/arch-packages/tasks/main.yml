@@ -1,0 +1,55 @@
+---
+- name: Install Arch packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - xorg-server
+    - xorg-xinit
+    - xterm
+    - firefox
+  become: yes
+  become_user: root
+
+#  LightDM {{{ #
+- name: Install LightDM
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - lightdm
+    - lightdm-gtk-greeter
+  become: yes
+  become_user: root
+
+- name: LightDM check default greeter
+  become: yes
+  become_user: root
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    line: "#greeter-session=example-gtk-gnome"
+    state: present
+  check_mode: yes
+  register: lightdm_greeter
+
+- name: LightDM set default greeter
+  become: yes
+  become_user: root
+  when: lightdm_greeter is not changed
+  lineinfile:
+    path: /etc/lightdm/lightdm.conf
+    regexp: "{{ item.From }}"
+    line: "{{ item.To }}"
+    state: present
+  with_items:
+      - { From: '^#greeter-session=example-gtk-gnome', To: 'greeter-session=lightdm-gtk-greeter' }
+
+- name: LightDM service enable
+  service:
+    name: lightdm
+    enabled: yes
+  become: yes
+  become_user: root
+#  }}} LightDM #
+
+# vim: foldmethod=marker:foldlevel=0

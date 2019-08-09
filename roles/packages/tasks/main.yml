@@ -1,64 +1,9 @@
 ---
+#  Common {{{ #
 - name: Create local bin directory
   file:
     path: ~/.bin
     state: directory
-
-- name: Add packages keys
-  apt_key: url={{ item }} state=present
-  with_items:
-    - https://dl-ssl.google.com/linux/linux_signing_key.pub
-  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
-  become: yes
-  become_user: root
-
-- name: Add packages repositories
-  apt_repository: repo={{ item }} state=present update_cache=yes
-  with_items:
-      - ppa:pmjdebruijn/darktable-release       # Darktable repository
-  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
-  become: yes
-  become_user: root
-
-- name: Install EPEL repo.
-  yum:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
-    state: present
-  when: ansible_os_family == 'RedHat'
-  become: yes
-  become_user: root
-
-- name: Install cask packages homebrew
-  homebrew_cask:
-    name: "{{ item }}"
-  with_items:
-    - calibre
-    - darktable
-    - digikam      # Photo viewer
-    - gimp
-    - gnucash
-    - hugin        # Panorama maker
-    - inkscape
-    - iterm2
-    - karabiner-elements
-    - mactex
-    - macvim
-    - osxfuse
-    - persepolis-download-manager
-    - qtpass
-    - spectacle
-    - transmission
-    - vlc
-    - xquartz
-  when: ansible_distribution == 'MacOSX'
-
-- name: Install Mac packages
-  homebrew:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - vifm
-  when: ansible_distribution == 'MacOSX'
 
 - name: Install packages
   package:
@@ -88,16 +33,47 @@
     - unrar
     - wget
     - zsh
+  become: yes
+  become_user: root
 
-# Some info get from here: https://developers.redhat.com/blog/2018/07/07/yum-install-gcc7-clang/
-- name: Install RedHat packages
-  package:
-    name: "{{ item }}"
-    state: present
+#  epub2txt {{{ #
+- name: Check if epub2txt is installed
+  stat:
+    path: ~/.bin/epub2txt
+  register: epub2txt_check
+
+- name: Download epub2txt sources
+  git:
+    repo: 'https://github.com/kevinboone/epub2txt'
+    dest: /tmp/epub2txt
+  when: epub2txt_check.stat.exists == False
+
+- name: Make epub2txt
+  shell: cd /tmp/epub2txt && make -j8
+  when: epub2txt_check.stat.exists == False
+
+- name: Copy epub2txt to bin directory
+  copy:
+    src: /tmp/epub2txt/epub2txt
+    dest: ~/.bin/epub2txt
+    mode: a+x
+  when: epub2txt_check.stat.exists == False
+#  }}} epub2txt #
+#  }}} Common #
+#  Ubuntu {{{ #
+- name: Add packages keys
+  apt_key: url={{ item }} state=present
   with_items:
-    - llvm-toolset-7
-    - llvm-toolset-7-clang-tools-extra  # clangd
-  when: ansible_os_family == 'RedHat'
+    - https://dl-ssl.google.com/linux/linux_signing_key.pub
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Add packages repositories
+  apt_repository: repo={{ item }} state=present update_cache=yes
+  with_items:
+      - ppa:pmjdebruijn/darktable-release       # Darktable repository
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
 
@@ -140,26 +116,60 @@
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
+#  }}} Ubuntu #
+#  RedHat {{{ #
+- name: Install EPEL repo.
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    state: present
+  when: ansible_os_family == 'RedHat'
+  become: yes
+  become_user: root
 
-- name: Check if epub2txt is installed
-  stat:
-    path: ~/.bin/epub2txt
-  register: epub2txt_check
+# Some info get from here: https://developers.redhat.com/blog/2018/07/07/yum-install-gcc7-clang/
+- name: Install RedHat packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - llvm-toolset-7
+    - llvm-toolset-7-clang-tools-extra  # clangd
+  when: ansible_os_family == 'RedHat'
+  become: yes
+  become_user: root
+#  }}} RedHat #
+#  MacOS {{{ #
+- name: Install cask packages homebrew
+  homebrew_cask:
+    name: "{{ item }}"
+  with_items:
+    - calibre
+    - darktable
+    - digikam      # Photo viewer
+    - gimp
+    - gnucash
+    - hugin        # Panorama maker
+    - inkscape
+    - iterm2
+    - karabiner-elements
+    - mactex
+    - macvim
+    - osxfuse
+    - persepolis-download-manager
+    - qtpass
+    - spectacle
+    - transmission
+    - vlc
+    - xquartz
+  when: ansible_distribution == 'MacOSX'
 
-- name: Download epub2txt sources
-  git:
-    repo: 'https://github.com/kevinboone/epub2txt'
-    dest: /tmp/epub2txt
-  when: epub2txt_check.stat.exists == False
+- name: Install Mac packages
+  homebrew:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - vifm
+  when: ansible_distribution == 'MacOSX'
+#  }}} MacOS #
 
-- name: Make epub2txt
-  shell: cd /tmp/epub2txt && make -j8
-  when: epub2txt_check.stat.exists == False
-
-- name: Copy epub2txt to bin directory
-  copy:
-    src: /tmp/epub2txt/epub2txt
-    dest: ~/.bin/epub2txt
-    mode: a+x
-  when: epub2txt_check.stat.exists == False
-
+# vim: foldmethod=marker:foldlevel=0

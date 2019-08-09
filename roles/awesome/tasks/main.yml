@@ -1,17 +1,10 @@
 ---
+#  Ubuntu {{{ #
 - name: Add Awesome repository
   apt_repository: repo={{ item }} state=present update_cache=yes
   with_items:
     - ppa:klaus-vormweg/awesome
   when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
-  become: yes
-  become_user: root
-
-- name: Add Awesome repository for Ubuntu 14.04
-  apt_repository: repo={{ item }} state=present update_cache=yes
-  with_items:
-      - deb http://cz.archive.ubuntu.com/ubuntu zesty main universe
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04'
   become: yes
   become_user: root
 
@@ -31,6 +24,20 @@
     - volumeicon-alsa                         # tray sound icon
     - lua-json
     - lua-sec
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
   become: yes
   become_user: root
+#  }}} Ubuntu #
+#  Arch {{{ #
+- name: Install Awesome packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - awesome
+  when: ansible_os_family == 'Archlinux'
+  become: yes
+  become_user: root
+#  }}} Arch #
 
+# vim: foldmethod=marker:foldlevel=0

@@ -1,14 +1,9 @@
 ---
 - hosts: localhost
-  # environment:
-  #   http_proxy:
-  #   https_proxy:
-  become_user: echuraev
+  become_user: "{{ ansible_env.USER | default('echuraev') }}"
 
   roles:
     - role: packages
-      become: yes
-      become_user: root
     #- role: awesome
     #- become: yes
     #- become_user: root
@@ -38,10 +33,6 @@
     #  become: yes
     #  become_user: root
     - role: mutt
-      become: yes
-      become_user: root
     - role: ctags-build
-      become: yes
     - role: terminfo
-      become: yes
 

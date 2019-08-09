@@ -1,4 +1,12 @@
 ---
+#  MacOS {{{ #
+- name: Install ctags for MacOS
+  homebrew:
+    name: "universal-ctags/universal-ctags/universal-ctags"
+    state: head
+  when: ansible_distribution == 'MacOSX'
+#  }}} MacOS #
+#  Linux {{{ #
 - name: Check if ctags is installed
   stat: path=~/.bin/ctags
   register: ctags_check
@@ -29,9 +37,6 @@
 - name: Create symlinks
   shell: ln -s $HOME/.bin/ctags-build/bin/ctags $HOME/.bin/ctags
   when: ansible_distribution != 'MacOSX' and ctags_check.stat.exists == False
+#  }}} Linux #
 
-- name: Install ctags for MacOS
-  homebrew:
-    name: "universal-ctags/universal-ctags/universal-ctags"
-    state: head
-  when: ansible_distribution == 'MacOSX'
+# vim: foldmethod=marker:foldlevel=0
