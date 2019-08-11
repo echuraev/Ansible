@@ -203,5 +203,24 @@
   become: yes
   become_user: root
 #  }}} Window programs #
+#  Printing {{{ #
+- name: Install tools for printers
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - cups
+    - cups-pdf
+    - system-config-printer
+  become: yes
+  become_user: root
+
+- name: Enable cups service
+  service:
+    name: org.cups.cupsd.service
+    enabled: yes
+  become: yes
+  become_user: root
+#  }}} Printing #
 
 # vim: foldmethod=marker:foldlevel=0

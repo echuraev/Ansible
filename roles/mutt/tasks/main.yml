@@ -1,11 +1,4 @@
 ---
-#- name: Check if mutt is installed
-#  command: which mutt
-#  ignore_errors: yes
-#  register: mutt_check
-#  become: yes
-#  become_user: echuraev
-#
 - name: Install mutt packages
   package:
     name: "{{ item }}"
@@ -13,13 +6,69 @@
   with_items:
     - mutt
     - isync
-    - imapfilter
     - msmtp
     - notmuch
     - gawk
     - pandoc
+
+#  Non Arch {{{ #
+- name: Install mutt packages for non Arch
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - imapfilter
     - urlview
     - lbdb
+  when: ansible_os_family != 'Archlinux'
+#  }}} Non Arch #
+#  Arch linux {{{ #
+#  imapfilter {{{ #
+- name: Download imapfilter sources
+  git:
+    repo: 'https://aur.archlinux.org/imapfilter.git'
+    dest: /tmp/imapfilter
+  when: ansible_os_family == 'Archlinux'
+
+- name: Install imapfilter
+  shell: cd /tmp/imapfilter && makepkg -si --noconfirm && cd - && rm -rf /tmp/imapfilter
+  when: ansible_os_family == 'Archlinux'
+#  }}} imapfilter #
+#  urlview {{{ #
+- name: Check if urlview is installed
+  command: which urlview
+  ignore_errors: yes
+  register: urlview_check
+  when: ansible_os_family == 'Archlinux'
+
+- name: Download urlview sources
+  git:
+    repo: 'https://github.com/RolandRosenfeld/lbdb'
+    dest: /tmp/urlview
+  when: ansible_os_family == 'Archlinux' and urlview_check.rc != 0
+
+- name: Build urlview
+  shell: cd /tmp/urlview && ./configure && make -j8 && cd -
+  when: ansible_os_family == 'Archlinux' and urlview_check.rc != 0
+
+- name: Install urlview
+  shell: cd /tmp/urlview && make -j8 install && cd - && rm -rf /tmp/urlview
+  when: ansible_os_family == 'Archlinux' and urlview_check.rc != 0
+  become: yes
+  become_user: root
+#  }}} urlview #
+#  lbdb {{{ #
+- name: Download lbdb sources
+  git:
+    repo: 'https://aur.archlinux.org/lbdb.git'
+    dest: /tmp/lbdb
+  when: ansible_os_family == 'Archlinux'
+
+- name: Install lbdb
+  shell: cd /tmp/lbdb && makepkg -si --noconfirm && cd - && rm -rf /tmp/lbdb
+  when: ansible_os_family == 'Archlinux'
+#  }}} lbdb #
+#  }}} Arch linux #
 
 - name: Install mutt packages for Mac
   package:
@@ -38,3 +87,5 @@
   loop:
     # mbsync will die on first sync without this:
     - ~/.mail
+
+# urlview: foldmethod=marker:foldlevel=0

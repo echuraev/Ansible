@@ -8,6 +8,7 @@
     - role: awesome
     - role: dropbox
     - role: user-settings
+    - role: mutt
     - role: ctags-build
     - role: terminfo
 
