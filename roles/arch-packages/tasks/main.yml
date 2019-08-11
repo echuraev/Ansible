@@ -4,6 +4,8 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - ntfs-3g
+    - gnome-terminal
     - vifm
     - xorg-server
     - xorg-xinit
@@ -11,6 +13,35 @@
   become: yes
   become_user: root
 
+#  Network management {{{ #
+- name: Install Network management tools
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - networkmanager
+    - network-manager-applet
+  become: yes
+  become_user: root
+
+- name: Network Manager service enable
+  service:
+    name: NetworkManager
+    enabled: yes
+  become: yes
+  become_user: root
+#  }}} Network management #
+#  Drivers {{{ #
+- name: Install Arch Drivers
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nvidia
+    - nvidia-settings
+  become: yes
+  become_user: root
+#  }}} Drivers #
 #  LightDM {{{ #
 - name: Install LightDM
   package:
@@ -63,6 +94,20 @@
   become: yes
   become_user: root
 #  }}} Office #
+#  File Manager {{{ #
+- name: Install Arch File Manager
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    #- gvfs
+    #- thunar
+    #- thunar-volman
+    - lxsession     # add this to autoload
+    - nautilus
+  become: yes
+  become_user: root
+#  }}} File Manager #
 #  Image processing {{{ #
 - name: Install Arch Image processing
   package:

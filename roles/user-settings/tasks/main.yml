@@ -19,7 +19,7 @@
   when: git_dir.stat.exists == False
 
 - stat: path="/usr/share/fonts/Literation Mono Powerline Nerd Font Complete Mono.ttf"
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution != 'MacOSX'
   register: lin_font_installed
 
 - stat: path="/usr/share/fonts/Literation Mono Powerline Nerd Font Complete Mono.ttf"
@@ -28,7 +28,7 @@
 
 - name: Install font
   get_url: dest="/usr/share/fonts/Literation Mono Powerline Nerd Font Complete Mono.ttf" url=https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/LiberationMono/complete/Literation%20Mono%20Nerd%20Font%20Complete%20Mono.ttf
-  when: ansible_distribution == 'Ubuntu' and lin_font_installed.stat.exists == False
+  when: ansible_distribution != 'MacOSX' and lin_font_installed.stat.exists == False
   become: yes
   become_user: root
 
