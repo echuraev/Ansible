@@ -13,6 +13,33 @@
   become: yes
   become_user: root
 
+#  Enable repos {{{ #
+- name: Check multilib comment
+  become: yes
+  become_user: root
+  lineinfile:
+    path: /etc/pacman.conf
+    line: "#[multilib]"
+    state: present
+  check_mode: yes
+  register: multilib_comment
+
+- name: Enable multilib
+  become: yes
+  become_user: root
+  when: multilib_comment is not changed
+  replace:
+    path: /etc/pacman.conf
+    regexp: '^#\[multilib\]\n#Include = /etc/pacman.d/mirrorlist'
+    replace: '[multilib]\nInclude = /etc/pacman.d/mirrorlist'
+
+- name: Run the equivalent of "pacman -Sy" as a separate step
+  when: multilib_comment is not changed
+  pacman:
+    update_cache: yes
+  become: yes
+  become_user: root
+#  }}} Enable repos #
 #  Network management {{{ #
 - name: Install Network management tools
   package:
@@ -143,5 +170,16 @@
   become: yes
   become_user: root
 #  }}} Internet #
+#  Window programs {{{ #
+- name: Install Win programs support
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wine
+    - steam
+  become: yes
+  become_user: root
+#  }}} Window programs #
 
 # vim: foldmethod=marker:foldlevel=0
