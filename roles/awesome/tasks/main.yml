@@ -36,6 +36,7 @@
   with_items:
     - awesome
     - rofi
+    - volumeicon                         # tray sound icon
   when: ansible_os_family == 'Archlinux'
   become: yes
   become_user: root
