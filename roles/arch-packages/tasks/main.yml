@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - base-devel
     - ntfs-3g
     - gnome-terminal
     - vifm
@@ -13,6 +14,15 @@
   become: yes
   become_user: root
 
+#  Install yay {{{ #
+- name: Download yay sources
+  git:
+    repo: 'https://aur.archlinux.org/yay.git'
+    dest: /tmp/yay
+
+- name: Install yay
+  shell: cd /tmp/yay && makepkg -si --noconfirm && cd - && rm -rf /tmp/yay
+#  }}} Install yay #
 #  Enable repos {{{ #
 - name: Check multilib comment
   become: yes
@@ -57,6 +67,15 @@
     enabled: yes
   become: yes
   become_user: root
+#  Install networkmanager-l2tp vpn {{{ #
+- name: Download networkmanager-l2tp sources
+  git:
+    repo: 'https://aur.archlinux.org/networkmanager-l2tp.git'
+    dest: /tmp/networkmanager-l2tp
+
+- name: Install networkmanager-l2tp
+  shell: cd /tmp/networkmanager-l2tp && makepkg -si --noconfirm && cd - && rm -rf /tmp/networkmanager-l2tp
+#  }}} Install networkmanager-l2tp vpn #
 #  }}} Network management #
 #  Drivers {{{ #
 - name: Install Arch Drivers
@@ -142,7 +161,10 @@
     state: present
   with_items:
     - darktable
+    - digikam
     - gimp
+    - inkscape
+    - vimiv
   become: yes
   become_user: root
 #  }}} Image processing #
