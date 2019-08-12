@@ -222,5 +222,16 @@
   become: yes
   become_user: root
 #  }}} Printing #
+#  Scanning {{{ #
+- name: Install tools for scanning
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - sane
+    - simple-scan
+  become: yes
+  become_user: root
+#  }}} Scanning #
 
 # vim: foldmethod=marker:foldlevel=0
