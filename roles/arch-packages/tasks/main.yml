@@ -5,8 +5,8 @@
     state: present
   with_items:
     - base-devel
-    - ntfs-3g
     - gnome-terminal
+    - ntfs-3g
     - vifm
     - xorg-server
     - xorg-xinit
@@ -96,6 +96,7 @@
   with_items:
     - lightdm
     - lightdm-gtk-greeter
+    - lightdm-gtk-greeter-settings
     - numlockx
   become: yes
   become_user: root
@@ -189,6 +190,8 @@
     state: present
   with_items:
     - firefox
+    - transmission-cli
+    - transmission-gtk
   become: yes
   become_user: root
 #  }}} Internet #
@@ -198,10 +201,26 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - wine
+    - lib32-mpg123
+    - lib32-nvidia-utils
+    - lutris
+    - mpg123
+    - nvidia
+    - nvidia-utils
     - steam
+    - ttf-liberation
+    - wine
   become: yes
   become_user: root
+#  Install dxvk-bin {{{ #
+- name: Download dxvk-bin sources
+  git:
+    repo: 'https://aur.archlinux.org/dxvk-bin.git'
+    dest: /tmp/dxvk-bin
+
+- name: Install dxvk-bin
+  shell: cd /tmp/dxvk-bin && makepkg -si --noconfirm && cd - && rm -rf /tmp/dxvk-bin
+#  }}} Install dxvk-bin #
 #  }}} Window programs #
 #  Printing {{{ #
 - name: Install tools for printers
@@ -233,5 +252,24 @@
   become: yes
   become_user: root
 #  }}} Scanning #
+#  Messangers {{{ #
+- name: Install Arch packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - telegram-desktop
+  become: yes
+  become_user: root
+#  Install skypeforlinux-stable-bin {{{ #
+- name: Download skypeforlinux-stable-bin sources
+  git:
+    repo: 'https://aur.archlinux.org/skypeforlinux-stable-bin.git'
+    dest: /tmp/skypeforlinux-stable-bin
+
+- name: Install skypeforlinux-stable-bin
+  shell: cd /tmp/skypeforlinux-stable-bin && makepkg -si --noconfirm && cd - && rm -rf /tmp/skypeforlinux-stable-bin
+#  }}} Install skypeforlinux-stable-bin #
+#  }}} Messangers #
 
 # vim: foldmethod=marker:foldlevel=0
