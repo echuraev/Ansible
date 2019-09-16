@@ -5,8 +5,11 @@
     state: present
   with_items:
     - base-devel
+    - exfat-utils
+    - fuse-exfat
     - gnome-terminal
     - ntfs-3g
+    - qalculate-gtk
     - vifm
     - xorg-server
     - xorg-xinit
@@ -85,6 +88,8 @@
   with_items:
     - nvidia
     - nvidia-settings
+    - ocl-icd
+    - opencl-nvidia
   become: yes
   become_user: root
 #  }}} Drivers #
@@ -164,10 +169,29 @@
     - darktable
     - digikam
     - gimp
+    - hugin
     - inkscape
+    - luminancehdr
     - vimiv
   become: yes
   become_user: root
+#  Install hdrmerge {{{ #
+- name: Download alglib sources
+  git:
+    repo: 'https://aur.archlinux.org/alglib.git'
+    dest: /tmp/alglib
+
+- name: Install alglib
+  shell: cd /tmp/alglib && makepkg -si --noconfirm && cd - && rm -rf /tmp/alglib
+
+- name: Download hdrmerge sources
+  git:
+    repo: 'https://aur.archlinux.org/hdrmerge.git'
+    dest: /tmp/hdrmerge
+
+- name: Install hdrmerge
+  shell: cd /tmp/hdrmerge && makepkg -si --noconfirm && cd - && rm -rf /tmp/hdrmerge
+#  }}} Install hdrmerge #
 #  }}} Image processing #
 #  Media & Audio {{{ #
 - name: Install Arch packages
@@ -271,5 +295,15 @@
   shell: cd /tmp/skypeforlinux-stable-bin && makepkg -si --noconfirm && cd - && rm -rf /tmp/skypeforlinux-stable-bin
 #  }}} Install skypeforlinux-stable-bin #
 #  }}} Messangers #
+#  System {{{ #
+- name: Install System packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - arandr
+  become: yes
+  become_user: root
+#  }}} System #
 
 # vim: foldmethod=marker:foldlevel=0
