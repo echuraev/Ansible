@@ -1,0 +1,57 @@
+---
+#  Common {{{ #
+- name: Create local bin directory
+  file:
+    path: ~/.bin
+    state: directory
+
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - autoconf
+    - automake
+    - cmake
+    - curl
+    - curlftpfs
+    - exiv2     # For text image preview
+    - gawk
+    - gdb
+    - git
+    - htop
+    - llvm      # For autocompletion
+    - mc
+    - ncdu
+    - python3
+    - sshfs
+    - tmux
+    - unrar
+    - wget
+    - zip
+    - zsh
+  become: yes
+  become_user: root
+#  }}} Common #
+#  Ubuntu {{{ #
+- name: Install Ubuntu packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - openssh-server
+    - python-pip
+    - python3-pip
+    - x11vnc
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+
+- name: Upgrade pip
+  pip: name=pip extra_args=--upgrade
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
+  become: yes
+  become_user: root
+#  }}} Ubuntu #
+
+# vim: foldmethod=marker:foldlevel=0
