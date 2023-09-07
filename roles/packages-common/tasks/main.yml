@@ -22,6 +22,7 @@
     - htop
     - llvm      # For autocompletion
     - mc
+    - mosh
     - ncdu
     - python3
     - sshfs
